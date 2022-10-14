@@ -1,3 +1,8 @@
 #idea
 .idea
 go-channel-signal-app.iml
+
+#execute file
+bin
+reporter
+
