@@ -8,6 +8,7 @@ VERSION=$$(cat version.txt)
 BUILD_NUM_FILE=build_num.txt
 OUTPUT=$(PROJECT_PATH)/$(TARGET_DIR)/$(MODULE_NAME)_$(VERSION).$$(cat $(BUILD_NUM_FILE))
 MAIN_DIR=/main
+TARGET_FILE=${target_file}
 LDFLAGS=-X main.BUILD_TIME=`date -u '+%Y-%m-%d_%H:%M:%S'`
 LDFLAGS+=-X main.GIT_HASH=`git rev-parse HEAD`
 LDFLAGS+=-X main.BUILD_NUMBER=$$(cat $(BUILD_NUM_FILE))
@@ -18,8 +19,8 @@ all: clean build
 
 build:
 	@echo $$(($$(cat $(BUILD_NUM_FILE)) + 1 )) > $(BUILD_NUM_FILE)
-	CGO_ENABLED=0 GOOS=linux go build -ldflags "$(LDFLAGS)" -o $(OUTPUT) $(PROJECT_PATH)$(MAIN_DIR)
-	cp $(OUTPUT) ./$(MODULE_NAME)
+	CGO_ENABLED=0 GOOS=linux go build -ldflags "$(LDFLAGS)" -o $(OUTPUT) $(PROJECT_PATH)$(MAIN_DIR)/$(TARGET_FILE).go
+	cp $(OUTPUT) ./$(TARGET_FILE)
 
 clean:
 	rm -f $(PROJECT_PATH)/$(TARGET_DIR)/$(MODULE_NAME)_$(VERSION)*
